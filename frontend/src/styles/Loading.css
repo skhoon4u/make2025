@@ -1,0 +1,40 @@
+/* 전체 컨테이너 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 375px;
+  height: 812px;
+  background-color: #edaa8e;
+}
+
+/* 점(dot) 컨테이너 */
+.dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* 개별 점(dot) 스타일 */
+.dot {
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5); /* 비활성 점 색상 */
+  transition: background-color 0.3s ease;
+}
+
+/* 활성화된 점 */
+.dot.active {
+  background-color: #fff; /* 활성 점 색상 */
+}
+
+/* 텍스트 스타일 */
+.loading-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}

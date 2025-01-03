@@ -1,0 +1,124 @@
+.image-box {
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+.placeholder-text {
+  font-size: 18px;
+  color: #999;
+}
+div.goal-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 자식 요소를 좌측 정렬 */
+}
+h2.page-subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4f8f8d;
+  padding-top: 0px;
+  display: block;
+  text-align: left;
+  align-items: flex-start;
+}
+.goal-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.goal-header {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  font-size: 10px;
+  font-weight: bold;
+  color: #999;
+  margin-bottom: 10px;
+}
+.goal-index {
+  margin-right: 10px; /* Adjust the spacing as needed */
+}
+
+.goal-item input {
+  width: 100%;
+  border: none;
+  background: none;
+  font-size: 16px;
+  color: #333;
+  outline: none;
+  padding: 5px 0;
+  border-bottom: 2px solid #ddd;
+  transition: border-color 0.3s ease;
+}
+.goal-item input::placeholder {
+  color: #ddd;
+  text-align: left;
+}
+.goal-item input:focus {
+  border-color: #4f8f8d;
+}
+.goal-item:focus-within .goal-header {
+  color: #4f8f8d; /* Change to the desired color */
+}
+
+.goal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%; /* 부모 요소의 전체 너비를 차지 */
+  gap: 5px;
+  font-size: 11px;
+  color: #666;
+  margin-top: 10px;
+  height: 5px;
+  padding-bottom: 1px;
+}
+
+.month-select {
+  /*margin-right: 5px;*/
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 12px;
+  color: #333;
+  background-color: #f9f9f9;
+  text-align: right;
+  height: 23px;
+}
+span {
+  margin: 0;
+}
+
+.form-button {
+  width: 304px;
+  height: 64px;
+  border: none;
+  border-radius: 25px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background-color: #6ea8a1;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.form-button:hover {
+  background-color: #5c998e;
+}
