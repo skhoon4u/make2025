@@ -6,13 +6,14 @@
   color: #eb996e;
 }
 form {
-  width: 90%;
+  width: 80%;
   height: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 10%;
 }
 .input-container {
   position: relative;
@@ -130,14 +131,6 @@ input::placeholder {
 .forgot-input-field.focused {
   background-color: #ffffff;
 }
-.terms-section {
-  text-align: center;
-  margin-top: 5%;
-  margin-bottom: 5%;
-  font-size: 12px;
-  opacity: 0.7;
-}
-
 .terms-link {
   color: #4f8f8d;
   text-decoration: underline;
@@ -162,7 +155,7 @@ input::placeholder {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,36 +163,96 @@ input::placeholder {
 }
 
 .terms-content {
-  background: white;
-  padding: 20px;
+  position: relative; /* 자식 요소(닫기 버튼)의 기준이 됨 */
+  background-color: #ffffff;
+  border: 2px solid #0066cc;
   border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  position: relative;
+  padding: 5%;
+  width: 80%;
+  height: 80%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
 .close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
   background: none;
   border: none;
-  font-size: 16px;
   cursor: pointer;
+  font-size: 20px;
+  position: absolute;
+  right: 3%;
+  top: 3%;
 }
 
-.close-button:hover {
-  color: red;
+.terms-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333333;
+}
+
+.terms-intro {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555555;
+  margin-bottom: 20px;
+}
+
+.terms-section {
+  font-size: 12px;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  opacity: 0.7;
+  text-align: center;
+}
+.terms-subtitle {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.terms-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.terms-table td {
+  border: 1px solid #cccccc;
+  padding: 10px;
+  font-size: 14px;
+  vertical-align: top;
+  text-align: left;
+}
+.terms-table th {
+  border: 1px solid #cccccc;
+  padding: 10px;
+  font-size: 14px;
+  vertical-align: center;
+  width: 40%;
+  background-color: #f3efe9;
+}
+
+.terms-footer {
+  font-size: 12px;
+  color: #555555;
+  line-height: 1.4;
+  text-align: center;
 }
 .forgot-title {
-  padding-top: 20%;
   font-size: 30px;
   font-weight: bold;
   color: #eb996e;
+  margin-top: 100px;
+  margin-bottom: 10px;
 }
 .forgot-subtitle {
   font-size: 13px;
-  margin-bottom: 30px;
+  margin-bottom: 150px;
 }
 .forgot-form {
   display: flex;
@@ -234,7 +287,7 @@ input::placeholder {
 .back-icon {
   width: 24px; /* SVG 크기 조정 */
   height: 24px;
-  margin-top: 20px;
+  pointer-events: none;
 }
 /* 하단 성공 메시지 스타일 */
 /* 하단 성공 메시지 스타일 */
@@ -259,4 +312,31 @@ input::placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.image-box {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  object-fit: contain;
+  background-color: transparent;
+  border: none;
+  margin: -10%;
+  padding: -10%;
+}
+
+.register .logo-image {
+  width: auto;
+  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin-top: -30%;
+}
+.character-image {
+  width: auto;
+  height: auto;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
 }

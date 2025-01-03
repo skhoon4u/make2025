@@ -4,8 +4,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 375px;
-  height: 812px;
+  width: 50vh; /* 고정 너비 대신 자동 크기 */
+  height: 95vh; /* 자동 높이 */
   background-color: #edaa8e;
 }
 

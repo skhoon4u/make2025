@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CommonStyles.css";
 import "../styles/Main.css";
+import logo from "../assets/icons/logo.svg";
+import character from "../assets/icons/c.svg";
 
 const MainPage = () => {
+  function setScreenSize() {
+    let vh = window.innerHeight * 0.01;
+
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+
+  setScreenSize();
   const navigate = useNavigate();
   const [startButtonText, setStartButtonText] = useState("시작하기");
   const [view2025ButtonText, setView2025ButtonText] =
@@ -33,12 +42,12 @@ const MainPage = () => {
 
       {/* 로고 박스 */}
       <div className="image-box">
-        <span className="placeholder-text">로고</span>
+        <object data={logo} alt="Logo" className="logo-image" />
       </div>
 
       {/* 캐릭터 박스 */}
       <div className="image-box">
-        <span className="placeholder-text">캐릭터</span>
+        <object data={character} alt="Character" className="character-image" />
       </div>
 
       {/* 버튼 영역 */}

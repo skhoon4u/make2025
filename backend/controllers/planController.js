@@ -10,34 +10,28 @@ const nodemailer = require("nodemailer");
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+const axios = require("axios");
+const GA_MEASUREMENT_ID = "G-5DG2B81VEP"; // 측정 ID
+const GA_API_SECRET = "qpQz4NnMQIqHFQHRC6B3bQ";
+
 // 임의로 지정한 키워드 10가지 (실제로는 DB에 저장하거나 config에서 가져올 수 있음)
 const PREDEFINED_KEYWORDS = [
-  "인내",
-  "자기관리",
-  "도전정신",
-  "집중력",
-  "창의성",
-  "균형감각",
-  "열정",
-  "기술",
-  "소통",
-  "재능",
+  "오늘 놀고, 내일은 더 잘 놀 계획!\n즐거움으로 가득 채우는 2025년!",
+  "꿈을 실현하여 모두를\n부러워하게 만드는 2025년!",
+  "계획만 보면 슈퍼히어로도\n울고 갈 완벽 추구의 2025년!",
+  "한 해가 12개월로 부족해 보이는\n야망찬 도전의 2025년!",
+  "하고 싶은 것도, 이뤄야 할 것도\n넘쳐흐르는 욕망 폭발 2025년",
+  "하고 싶은 것보다 필요한 것을\n우선하는 실속있는 2025년!",
+  "매일매일 조금씩,\n꾸준히 쌓아가는 인내의 2025년!",
+  "과정은 고통이지만 결과는 감동!\n모든 걸 갈아넣는 열정의 2025년!",
+  "몸도 마음도 지식도 꽉 채우는\n조화로운 2025년!",
+  "바람처럼 자유롭게 흘러가는\n유연한 2025년!",
 ];
-const KEYWORDS_EXPLANATION = {
-  인내: "어려운 상황에서도 포기하지 않고 끝까지 노력하는 능력",
-  자기관리: "자신을 잘 관리하고 조절하는 능력",
-  도전정신: "어려운 일에 대해 도전하고 극복하는 능력",
-  집중력: "주어진 일에 집중하고 끝까지 완수하는 능력",
-  창의성: "새로운 아이디어나 방법을 찾아내는 능력",
-  균형감각: "일과 생활의 균형을 유지하는 능력",
-  열정: "뜨겁게 열정적으로 일하는 능력",
-  기술: "특정 분야의 기술을 습득하고 응용하는 능력",
-  소통: "상대방과 원활하게 의사소통하는 능력",
-  재능: "특정 분야에서 뛰어난 능력을 가지고 있는 것",
-};
+
 // -------------------------
 // 모든 목표를 통합 → 단 하나의 카테고리
 // -------------------------
+
 async function classifyMultipleGoals(goals) {
   /*
     goals: [{ goalTitle, targetMonth }, ...]
@@ -56,9 +50,13 @@ async function classifyMultipleGoals(goals) {
     아래 카테고리 목록 중 "하나"만 골라라:
     ${PREDEFINED_KEYWORDS.join(", ")}.
 
-    어떤 목표는 여러 범주가 있을 수 있으나, 
-    '하나'만 선택하고, 
-    그 '카테고리 이름'만 엄격히 출력하라.
+    출력 요구사항:
+    1. 반드시 아래 목록 중 하나의 카테고리를 선택해야 한다.
+    2. 카테고리 이름을 변경하거나 수정하지 말라.
+    3. '\n'을 포함한 모든 문자는 그대로 유지해야 한다. '\n'를 제거하거나 대체하지 말라.
+    4. 가능한 카테고리 외의 값은 절대로 출력하지 말라.
+
+    카테고리를 정확히 선택하고 그대로 출력하라.
   `;
 
   const userMessage = `
@@ -111,7 +109,7 @@ async function generatePlanWithGPT(goals, requestDate) {
   const goalDescriptions = goals
     .map((g, i) => `${i + 1}. "${g.goalTitle}" (달성: ${g.targetMonth}월)`)
     .join("\n");
-
+  const maxMonth = Math.max(...goals.map((goal) => goal.targetMonth));
   // === System Message ===
   const systemMessage = `
     너는 일정 관리 전문 코치 AI이다.
@@ -125,6 +123,7 @@ async function generatePlanWithGPT(goals, requestDate) {
        주차별로 각각의 목표에 대해 계획을 나눠서 작성해야 한다.
     2. 월별 계획:
        요청 달 이후의 월별 계획을 작성하라.
+       각 목표의 설정된 "최대 달(${maxMonth}월)"까지 월별 계획을 작성하라.
        각 목표마다 월별 계획을 나눠 작성해야 한다.
     3. 계획 내용은 구체적이어야 하며, 최대한 현실적으로 사용할 수 있는 내용을 포함하라.
     4. JSON 형식으로 출력하라. 설명이나 부가 텍스트는 포함하지 말고, 
@@ -139,8 +138,8 @@ async function generatePlanWithGPT(goals, requestDate) {
       },
       "monthlyPlan": {
         "2월": ["목표 1 관련 계획", "목표 2 관련 계획"],
-        "3월": ["목표 1 관련 계획", "목표 2 관련 계획"],
         ...
+        "${maxMonth}월": ["목표 1 관련 계획", "목표 2 관련 계획"]
       }
     }
   `;
@@ -151,7 +150,7 @@ async function generatePlanWithGPT(goals, requestDate) {
     ${goalDescriptions}
 
     요청 날짜: ${requestMonth}월 ${requestWeek}주차 기준
-    각 목표에 대해 주차별 및 월별 계획을 작성해라.
+    각 목표별로 4주차까지 주차계획을, 그리고 최대 달(${maxMonth}월)까지 월별 계획을 작성해라.
   `;
 
   // ChatCompletion 요청
@@ -215,11 +214,12 @@ async function saveGoals(req, res) {
     // GPT로 "하나의 카테고리" 산출
     const matchedKeyword = await classifyMultipleGoals(validGoals);
     // 키워드 설명 가져오기
-    const keywordExplanation =
-      KEYWORDS_EXPLANATION[matchedKeyword] || "설명이 없습니다.";
-    console.log("키워드 설명:", keywordExplanation);
     // GPT로 월별/주별 계획 생성
-    const gptPlan = await generatePlanWithGPT(validGoals, requestDate);
+    const maxMonth = Math.max(...validGoals.map((goal) => goal.targetMonth));
+    const gptPlan = await generatePlanWithGPT(
+      validGoals,
+      new Date().toISOString().split("T")[0]
+    );
     const { monthlyPlan = [], weeklyDetail = [] } = gptPlan;
 
     console.log("최종 응답:", {
@@ -233,7 +233,6 @@ async function saveGoals(req, res) {
       msg: "목표 저장 & GPT 처리 완료",
       createdGoals: existingGoals.goals,
       matchedKeyword,
-      keywordExplanation,
       monthlyPlan,
       weeklyDetail,
     });
@@ -266,15 +265,56 @@ async function confirmPlan(req, res) {
     return res.status(500).json({ msg: "서버 에러", error: error.message });
   }
 }
-// Helper function: Generate HTML Email Content
+
+// -------------------------
+// 추적 픽셀 라우트
+// -------------------------
+/*
+const trackEmailView = async (req, res) => {
+  try {
+    const { userId } = req.query;
+
+    // 구글 애널리틱스에 이벤트 전송
+    const payload = {
+      client_id: userId || "anonymous", // 익명 사용자 또는 실제 사용자 ID
+      events: [
+        {
+          name: "email_open",
+          params: {
+            user_id: userId || "anonymous",
+            timestamp: new Date().toISOString(),
+          },
+        },
+      ],
+    };
+    await axios.post(
+      `https://www.google-analytics.com/mp/collect?measurement_id=${GA_MEASUREMENT_ID}&api_secret=${GA_API_SECRET}`,
+      payload
+    );
+
+    // 서버 로그 기록
+    console.log(
+      `Email viewed by user: ${userId} at ${new Date().toISOString()}`
+    );
+
+    // 투명 1x1 픽셀 이미지 반환
+    const pixelBuffer = Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgEBgHtIOq0AAAAASUVORK5CYII=",
+      "base64"
+    );
+    res.writeHead(200, {
+      "Content-Type": "image/png",
+      "Content-Length": pixelBuffer.length,
+    });
+    res.end(pixelBuffer);
+  } catch (error) {
+    console.error("Error tracking email view:", error);
+    res.status(500).send("Error tracking email view.");
+  }
+};
+*/
 // Helper function: Generate HTML Email Content
 function generateEmailHTML(planData, userName) {
-  // URL을 실제 이미지 URL로 교체해야 합니다.
-  const leftQuoteIconURL = "https://yourdomain.com/assets/icons/left-quote.svg"; // 예시 URL
-  const rightQuoteIconURL =
-    "https://yourdomain.com/assets/icons/right-quote.svg"; // 예시 URL
-  const placeholderImageURL = "https://via.placeholder.com/150"; // 예시 이미지 URL
-
   return `
     <!DOCTYPE html>
     <html lang="ko">
@@ -335,11 +375,6 @@ function generateEmailHTML(planData, userName) {
         .photo-container {
           text-align: center;
           margin: 20px 0;
-        }
-        .placeholder-image {
-          width: 150px;
-          height: 150px;
-          border-radius: 50%;
         }
         .keyword-explanation {
           font-size: 16px;
@@ -407,16 +442,6 @@ function generateEmailHTML(planData, userName) {
             <span class="keyword">${planData.matchedKeyword}</span>
           </div>
 
-          <!-- 사진 영역 -->
-          <div class="photo-container">
-            <img src="${placeholderImageURL}" alt="Placeholder" class="placeholder-image" />
-          </div>
-
-          <!-- 키워드 설명 -->
-          <div class="keyword-explanation">
-            ${planData.keywordExplanation}
-          </div>
-
           <!-- 주차별 계획 -->
           <div class="plan-section">
             <div class="plan-title">주차별 계획</div>
@@ -462,7 +487,7 @@ function generateEmailHTML(planData, userName) {
 
         <!-- 버튼 -->
         <div class="button-container">
-          <a href="localhost:3000/login" class="button">계획 수정하기</a>
+          <a href="www.make2025.click/login" class="button">계획 수정하기</a>
         </div>
       </div>
     </body>
@@ -481,7 +506,7 @@ async function sendPlanEmail(req, res) {
     if (!user) {
       return res.status(401).json({ msg: "유효하지 않은 사용자" });
     }
-
+    const pixelUrl = `ec2-54-85-202-170.compute-1.amazonaws.com/track-email?userId=${userId}`;
     const htmlContent = generateEmailHTML(plan, user.name);
 
     const transporter = nodemailer.createTransport({
@@ -513,6 +538,7 @@ async function sendPlanEmail(req, res) {
 // 모듈 export
 // -------------------------
 module.exports = {
+  /*trackEmailView,*/
   saveGoals,
   confirmPlan,
   sendPlanEmail,

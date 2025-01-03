@@ -2,20 +2,7 @@
   font-size: 16px;
   font-weight: normal;
   color: #000;
-  margin-top: 25%;
-  padding-top: 0px;
-}
-
-.image-box {
-  width: 150px;
-  height: 150px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-  background-color: #fff;
+  padding-top: 15%;
 }
 
 .placeholder-text {
@@ -23,27 +10,10 @@
   color: #999;
 }
 
-.secondary-button {
-  width: 80%;
-  max-width: 300px;
-  height: 50px;
-  border: none;
-  border-radius: 25px;
-  font-size: 16px;
-  color: #4f8f8d;
-  background-color: #e1f5f4;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.secondary-button:hover {
-  background-color: #dae8d7;
-}
-
 .first-button {
   width: 80%;
   max-width: 300px;
-  height: 50px;
+  height: 7vh;
   border: none;
   border-radius: 25px;
   font-size: 18px;
@@ -51,13 +21,31 @@
   background-color: #4f8f8d;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 45%;
-  margin-bottom: 3%;
+
+  margin: 5%;
 }
 
 .first-button:hover {
   background-color: #457775;
 }
+
+.secondary-button {
+  width: 80%;
+  max-width: 300px;
+  height: 7vh;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  color: #4f8f8d;
+  background-color: #e1f5f4;
+  cursor: pointer;
+  margin-bottom: 5%;
+}
+
+.secondary-button:hover {
+  background-color: #dae8d7;
+}
+
 .end-subtitle {
   font-size: 20px;
   font-weight: bold;
@@ -68,7 +56,7 @@
 .end-button {
   width: 80%;
   max-width: 300px;
-  height: 50px;
+  height: 100%;
   border: none;
   border-radius: 25px;
   font-size: 18px;
@@ -76,6 +64,32 @@
   background-color: #4f8f8d;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 45%;
-  margin-bottom: 3%;
+  margin-top: 20%;
+  margin-bottom: 30%;
+}
+
+.image-box {
+  width: 40vh;
+  height: 40vh;
+  display: flex;
+  object-fit: contain;
+  background-color: transparent;
+  border: none;
+  padding-bottom: -10%;
+  margin: -10%;
+}
+.login-subtitle {
+  padding-top: 100px;
+}
+.logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: -30%;
+}
+.character-image {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  padding-top: -30%;
 }

@@ -6,6 +6,7 @@ import axios from "../api/axiosInstance"; // Analytics API 호출을 위한 axio
 import "../styles/CommonStyles.css";
 import "../styles/Goal.css";
 import LoadingPage from "../components/LoadingPage";
+import logo from "../assets/icons/logo.svg";
 
 const GoalPage = () => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const GoalPage = () => {
     <div className="page-container goal-page">
       {/* 로고 박스 */}
       <div className="image-box">
-        <span className="placeholder-text">로고</span>
+        <object data={logo} alt="Logo" className="logo-image" />
       </div>
       <h2 className="page-subtitle">나의 목표를 입력하세요</h2>
       {goals.map((goal, index) => (

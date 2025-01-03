@@ -8,6 +8,7 @@ import emailIcon from "../assets/icons/email.svg";
 import lockIcon from "../assets/icons/lock.svg";
 import eyeIcon from "../assets/icons/eye.svg";
 import eyeOffIcon from "../assets/icons/eye-off.svg";
+import logo from "../assets/icons/logo.svg";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -49,13 +50,11 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="page-container forgot">
-      <h1 className="register-title">
-        나만의 목표로<br></br>후회 없는
-      </h1>
+    <div className="register page-container forgot">
+      <p className="login-subtitle"></p>
       {/* 로고 박스 */}
-      <div className="image-box">
-        <span className="placeholder-text">로고</span>
+      <div className="login image-box">
+        <object data={logo} alt="Logo" className="logo-image" />
       </div>
       <form onSubmit={handleSubmit}>
         {/* 이메일 입력 */}
@@ -64,7 +63,7 @@ const LoginPage = () => {
             focusedField === "email" ? "focused" : ""
           }`}
         >
-          <img src={emailIcon} alt="Email Icon" className="input-icon" />
+          <object data={emailIcon} alt="Email Icon" className="input-icon" />
           <input
             type="email"
             className="dynamic-input"
@@ -82,7 +81,7 @@ const LoginPage = () => {
             focusedField === "password" ? "focused" : ""
           }`}
         >
-          <img src={lockIcon} alt="Lock Icon" className="input-icon" />
+          <object data={lockIcon} alt="Lock Icon" className="input-icon" />
           <input
             type={showPassword ? "text" : "password"}
             className="dynamic-input"

@@ -47,7 +47,7 @@ const ForgotPasswordPage = () => {
     <div className="page-container forgot">
       {/* 뒤로가기 버튼 */}
       <button className="back-button" onClick={handleGoBack}>
-        <img src={backIcon} alt="뒤로가기" className="back-icon" />
+        <object data={backIcon} alt="뒤로가기" className="back-icon" />
       </button>
       <h1 className="forgot-title">비밀번호 찾기</h1>
       <p className="forgot-subtitle">

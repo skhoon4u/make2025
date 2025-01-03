@@ -8,6 +8,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import TermsPage from "./pages/TermsPage"; // 약관 동의 페이지 추가
 import MainPage from "./pages/MainPage";
 import EndPage from "./pages/EndPage";
+import LoadingPage from "./components/LoadingPage";
 
 import "./styles/CommonStyles.css"; // 글로벌 스타일로 CommonStyles.css 사용
 
@@ -15,6 +16,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/*<Route path="/loading" element={<LoadingPage />} />*/}
         <Route path="/" element={<MainPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
