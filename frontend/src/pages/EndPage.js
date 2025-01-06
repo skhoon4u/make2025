@@ -22,12 +22,12 @@ const EndPage = () => {
       <h2 className="end-subtitle">메일 발송 완료!</h2>
 
       {/* 로고 박스 */}
-      <div className="image-box">
+      <div className="image-box end">
         <object data={logo} alt="Logo" className="logo-image" />
       </div>
 
       {/* 캐릭터 박스 */}
-      <div className="image-box">
+      <div className="image-box end">
         <object data={character} alt="Character" className="character-image" />
       </div>
 

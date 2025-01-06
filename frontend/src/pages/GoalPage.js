@@ -9,6 +9,13 @@ import LoadingPage from "../components/LoadingPage";
 import logo from "../assets/icons/logo.svg";
 
 const GoalPage = () => {
+  function setScreenSize() {
+    let vh = window.innerHeight * 0.01;
+
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+
+  setScreenSize();
   const navigate = useNavigate();
   const location = useLocation(); // React Router의 현재 위치 정보
   const [goals, setGoals] = useState(

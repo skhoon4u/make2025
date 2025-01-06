@@ -139,3 +139,6 @@ span {
   height: 100%;
   object-fit: contain;
 }
+.goal-page .image-box {
+  padding-top: 15%;
+}
