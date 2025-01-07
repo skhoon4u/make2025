@@ -169,9 +169,7 @@ const PlanPage = () => {
 
       {/* 계획 내용 */}
       <div className="plan-content">
-        <p className="keywordex">
-          키워드 예) 우여곡절 많아도 결구에는 해내는 해
-        </p>
+        <p className="keywordex">{keywordWithLineBreaks}</p>
         <h2 className="plan-username">2025년 만드는 법</h2>
         <PlanDisplay
           planData={planData}

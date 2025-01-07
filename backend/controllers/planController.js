@@ -94,12 +94,100 @@ async function classifyMultipleGoals(goals) {
 // -------------------------
 // GPT로 월별/주별 계획 JSON 생성
 // 예: planController.js (일부)
-
 async function generatePlanWithGPT(goals, requestDate) {
-  /*
-    goals: [{ goalTitle, targetMonth }, ...]
-    requestDate: 요청 날짜 (YYYY-MM-DD 형식)
-  */
+  const request = new Date(requestDate);
+  const requestMonth = request.getMonth() + 1; // 현재 월
+  const requestWeek = Math.ceil(request.getDate() / 7); // 요청 날짜의 주차 계산
+  const maxMonth = Math.max(...goals.map((goal) => goal.targetMonth)); // 최대 목표 달
+
+  const weeklyDetail = {}; // 통합된 주차별 계획
+  const monthlyPlan = {}; // 통합된 월별 계획
+
+  // 각 목표에 대해 API 호출
+  for (const goal of goals) {
+    const systemMessage = `
+      너는 일정 관리 전문 코치 AI이다.
+      사용자의 목표 "${goal.goalTitle}"에 대해,
+      주차별 계획(weeklyDetail)과 월별 계획(monthlyPlan)을 작성해라.
+
+      요구사항:
+      1. 주차별 계획:
+         "${goal.goalTitle}"에 대해 4주 동안의 주차별 계획을 작성하라.
+         예: "목표: 살 10kg 감량"이면,
+         "1월 2주차: 식단 관리 시작", "1월 3주차: 매일 30분 운동"과 같은 계획을 작성한다.
+      2. 월별 계획:
+         요청 달 이후의 월별 계획을 작성하라.
+         "${goal.targetMonth}"까지 월별 계획을 작성하라.
+         예: "2월: 체중 5kg 감량 목표 달성", "3월: 유지 관리 시작"과 같은 계획을 작성한다.
+      3. 계획 내용은 구체적이어야 하며, 최대한 현실적으로 사용할 수 있는 내용을 포함하라.
+      4. JSON 형식으로 출력하라. 설명이나 부가 텍스트는 포함하지 말고,
+         아래 구조를 따른다.
+
+      JSON 구조:
+      {
+        "weeklyDetail": {
+          "1월 2주차": ["목표 관련 계획"],
+          "1월 3주차": ["목표 관련 계획"],
+          ...
+        },
+        "monthlyPlan": {
+          "2월": ["목표 관련 계획"],
+          ...
+          "${goal.targetMonth}월": ["목표 관련 계획"]
+        }
+      }
+    `;
+
+    const userMessage = `
+      목표:
+      - "${goal.goalTitle}" (달성: ${goal.targetMonth}월)
+
+      요청 날짜: ${requestMonth}월 ${requestWeek}주차 기준
+      이 목표에 대해 4주차까지 주차계획을, 그리고 ${goal.targetMonth}월까지 월별 계획을 작성하라.
+    `;
+
+    // API 요청
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: systemMessage },
+        { role: "user", content: userMessage },
+      ],
+      temperature: 0.7,
+      max_tokens: 1000,
+    });
+
+    // 응답 파싱
+    const rawText = response.choices[0].message.content.trim();
+    let parsed;
+    try {
+      parsed = JSON.parse(rawText);
+    } catch (err) {
+      console.error("JSON 파싱 실패:", rawText);
+      throw new Error("GPT 응답 JSON 파싱 실패");
+    }
+
+    // 주차별 계획 통합
+    for (const [week, plans] of Object.entries(parsed.weeklyDetail || {})) {
+      if (!weeklyDetail[week]) weeklyDetail[week] = [];
+      weeklyDetail[week] = [...weeklyDetail[week], ...plans];
+    }
+
+    // 월별 계획 통합
+    for (const [month, plans] of Object.entries(parsed.monthlyPlan || {})) {
+      if (!monthlyPlan[month]) monthlyPlan[month] = [];
+      monthlyPlan[month] = [...monthlyPlan[month], ...plans];
+    }
+  }
+
+  // 최종 통합 결과 반환
+  return { weeklyDetail, monthlyPlan };
+}
+/*
+async function generatePlanWithGPT(goals, requestDate) {
+
+    //goals: [{ goalTitle, targetMonth }, ...]
+    //requestDate: 요청 날짜 (YYYY-MM-DD 형식)
 
   const request = new Date(requestDate);
   const requestMonth = request.getMonth() + 1; // 현재 월
@@ -180,6 +268,7 @@ async function generatePlanWithGPT(goals, requestDate) {
 
   return parsed;
 }
+  */
 // (A) 계정별 목표 저장 & GPT 통합
 // -------------------------
 async function saveGoals(req, res) {
@@ -313,6 +402,7 @@ const trackEmailView = async (req, res) => {
   }
 };
 */
+
 // Helper function: Generate HTML Email Content
 function generateEmailHTML(planData, userName) {
   return `

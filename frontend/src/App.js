@@ -11,6 +11,9 @@ import EndPage from "./pages/EndPage";
 import LoadingPage from "./components/LoadingPage";
 
 import "./styles/CommonStyles.css"; // 글로벌 스타일로 CommonStyles.css 사용
+import ReactGA from "react-ga4";
+const measurementId = process.env.REACT_APP_GA_MEASUREMENT_ID;
+ReactGA.initialize(measurementId);
 
 function App() {
   return (

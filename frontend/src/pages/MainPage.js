@@ -4,7 +4,7 @@ import "../styles/CommonStyles.css";
 import "../styles/Main.css";
 import logo from "../assets/icons/logo.svg";
 import character from "../assets/icons/c.svg";
-
+import ReactGA from "react-ga4"; // GA4 라이브러리 추가
 const MainPage = () => {
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
@@ -17,7 +17,10 @@ const MainPage = () => {
   const [startButtonText, setStartButtonText] = useState("시작하기");
   const [view2025ButtonText, setView2025ButtonText] =
     useState("나의 2025 조회하기");
-
+  // GA4 페이지뷰 트래킹 추가
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: "/main", title: "Main Page" });
+  }, []);
   const handleStart = () => {
     setStartButtonText("2025 만들기");
     setTimeout(() => {
